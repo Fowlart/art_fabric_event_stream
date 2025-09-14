@@ -1,0 +1,4 @@
+azure-eventhub
+Telethon==1.38.1
+pyspark
+dotenv
