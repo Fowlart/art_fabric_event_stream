@@ -16,8 +16,14 @@ Under any circumstances, do not commit `init_session.session` in public repos. Y
 - Fabric Eventstream transformations
 - Fabric Eventstream window functions
 
-Tasks
+## Tasks
+
 1. [x] ~~Ingest the telegram messages from the specific channel~~
-2. [x] Use Spark Structured Streaming to append only the messages each time, without overwriting
+
+2. [x] Configure Spark Structured Streaming to get 
+the resulting messages table that contains no duplicates 
+and a full list of messages. Use the Delta format `merge into` 
+capabilities for each batch stream function. 
+
 3. [x] Use DTOs to encapsulate message structure
 
