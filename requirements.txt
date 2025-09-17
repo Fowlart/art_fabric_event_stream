@@ -1,4 +1,8 @@
+# Azure
 azure-eventhub
-Telethon==1.38.1
+# spark
 pyspark
+delta-spark
+# misc
 dotenv
+telethon==1.38.1

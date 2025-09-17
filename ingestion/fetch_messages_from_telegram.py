@@ -5,9 +5,9 @@ import dotenv
 import os
 import datetime
 
-from telegramer import Telegramer
+from utils.telegramer import Telegramer
 
-def save_to_local_fs(path: str, json_record: dict[str,str]):
+def _save_to_local_fs(path: str, json_record: dict[str,str]):
     with codecs.open(path, "w", "utf-8", "replace") as file:
         json_object = json.dumps(json_record, indent=2, separators=(',', ':'), ensure_ascii=False)
         file.write(json_object)
@@ -18,10 +18,17 @@ if __name__ == '__main__':
     dotenv.load_dotenv()
 
     telegrammer = Telegramer()
+
     dialog_of_interest = os.getenv("SPECIFIC_DIALOG")
-    #telegrammer.print_dialogs()
-    #telegrammer.print_messages_from_dialog(dialog_of_interest)
-    messages: list[dict[str,Any]] = telegrammer.get_messages_from_dialog(dialog_of_interest,100)
+
+    telegrammer.print_dialogs()
+
+    messages: list[dict[str,Any]] = telegrammer.get_messages_from_dialog(dialog_of_interest,500)
+
+    dir_for_storing = f"{os.getenv('MESSAGE_FOLDER')}\\{datetime.date.today()}"
+
+    if not (os.path.isdir(dir_for_storing)):
+        os.mkdir(dir_for_storing)
 
     for m in messages:
         file_name = ((str(m.get('dialog') + '_'+ m.get('crawling_date'))
@@ -37,6 +44,4 @@ if __name__ == '__main__':
 
         print(file_name)
 
-
-
-        save_to_local_fs(f"{os.getenv('MESSAGE_FOLDER')}\\{datetime.date.today()}\\{file_name}.json",m)
+        _save_to_local_fs(f"{dir_for_storing}\\{file_name}.json",m)

@@ -1,3 +1,5 @@
 /.env
 /.venv/
 /messages_from_tg/
+/ingestion/init_session.session
+/messages_from_tg_transformed/

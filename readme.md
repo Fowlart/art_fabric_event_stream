@@ -6,7 +6,6 @@ format for further populating in Fabric Eventstream
 
 **Topics to include and study:**
 - Telethon
-- Virtual env
 - OOP style of code
 - Processing data with Spark
 - Spark Structured Streaming
@@ -15,6 +14,7 @@ format for further populating in Fabric Eventstream
 - Fabric Eventstream window functions
 
 Tasks
-1. [x] Ingest the telegram messages from the specific channel
-2. [x] Create a Spark job to ingest messages;
-use Structured Streaming; 
+1. [x] ~~Ingest the telegram messages from the specific channel~~
+2. [x] Use Spark Structured Streaming to append only the messages each time, without overwriting
+3. [x] Use DTOs to encapsulate message structure
+
