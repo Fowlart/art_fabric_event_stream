@@ -3,6 +3,9 @@
 - The application can parse the Telegram messages and store them in a delta-table 
 format for further populating in Fabric Eventstream 
 
+## Warning
+Under any circumstances, do not commit `init_session.session` in public repos. Your telegram will be attempted to hack.
+
 
 **Topics to include and study:**
 - Telethon
