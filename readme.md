@@ -1,11 +1,11 @@
 # Fabric event stream message producer
 
-- The application can parse the Telegram messages and store them in a delta-table 
-format for further populating in Fabric Eventstream 
+- The application can parse the Telegram messages, reprocess and store them in JSON format for further populating in Fabric Eventstream 
 
 ## Warning
 Under any circumstances, do not commit `init_session.session` in public repos. Your telegram will be attempted to hack.
 
+## Goals
 
 **Topics to include and study:**
 - Telethon
