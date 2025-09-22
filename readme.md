@@ -3,7 +3,11 @@
 - The application can parse the Telegram messages, reprocess and store them in JSON format for further populating in Fabric Eventstream 
 
 ## Warning
-Under any circumstances, do not commit `init_session.session` in public repos. Your telegram will be attempted to hack.
+- Under any circumstances, do not commit `init_session.session` in public repos. Your telegram will be attempted to hack.
+
+- In case of `NoClassDefFoundError`, please copy the necessary package/packages into: 
+`.venv\Lib\site-packages\pyspark\jars\`, or make sure the jar is accessible for the Python interpreter you are using
+
 
 ## Goals
 

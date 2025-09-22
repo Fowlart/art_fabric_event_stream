@@ -1,8 +1,12 @@
 # Azure
 azure-eventhub
-# spark
-pyspark
+# Spark
+pyspark==4.0.1
 delta-spark
+pandas
+pyArrow
+grpcio
+grpcio-status
 # misc
 dotenv
 telethon==1.38.1
