@@ -27,7 +27,7 @@
 2. [x] Configure Spark Structured Streaming to get 
 the resulting messages table that contains no duplicates 
 and a full list of messages. Use the Delta format `merge into` 
-capabilities for each batch stream function. 
+capabilities for each batch stream function. Check and optimize.
 
 3. [x] Use DTOs to encapsulate message structure
 
