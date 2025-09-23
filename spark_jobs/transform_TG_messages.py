@@ -61,7 +61,7 @@ if __name__ == "__main__":
 
     query = ( spark.readStream
         .option("multiLine", "true")
-        #.option("maxFilesPerTrigger", 200)
+        .option("maxFilesPerTrigger", 1000)
         .schema(get_raw_schema_definition())
         .option("recursiveFileLookup", "true")
         .option("includeMetadataField", "true")
