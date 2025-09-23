@@ -4,8 +4,9 @@ import os
 import pyspark
 from delta import configure_spark_with_delta_pip
 from delta import DeltaTable
-from pyspark.sql import DataFrame
-from pyspark.sql import SparkSession
+from pyspark.sql import DataFrame, SparkSession
+from pyspark.sql.catalog import Column
+from pyspark.sql.functions import col
 
 from utils.dtos import get_raw_schema_definition
 import dotenv
@@ -26,12 +27,18 @@ def _handle_batches(spark_session: SparkSession,
 
     updates_df = data_frame.dropDuplicates(["message_date", "message_text"])
 
-    (delta_table
+    merge_conditions: Column = (
+        (col("target.message_date") == col("source.message_date")) &
+        (col("target.message_text") == col("source.message_text"))
+    )
+
+    (
+      delta_table
      .alias("target")
-     .merge(
-        source=updates_df.alias("source"),
-        condition="target.message_date = source.message_date AND target.message_text = source.message_text"
-    ).whenNotMatchedInsertAll().execute())
+     .merge(source=updates_df.alias("source"),  condition=merge_conditions)
+     .whenNotMatchedInsertAll()
+     .execute()
+     )
 
 if __name__ == "__main__":
 
@@ -46,14 +53,15 @@ if __name__ == "__main__":
         print("There are no messages for creating the table. Please, park the messages first under the `dialogs` folder!")
         sys.exit(1)
 
-    builder = pyspark.sql.SparkSession.builder.appName("MyApp") \
-        .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension") \
-        .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog")
+    builder = (pyspark.sql.SparkSession.builder.appName("Telegram message transformation")
+        .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension")
+        .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog"))
 
     spark = configure_spark_with_delta_pip(builder).getOrCreate()
 
     query = ( spark.readStream
         .option("multiLine", "true")
+        #.option("maxFilesPerTrigger", 200)
         .schema(get_raw_schema_definition())
         .option("recursiveFileLookup", "true")
         .option("includeMetadataField", "true")
@@ -62,9 +70,7 @@ if __name__ == "__main__":
         .writeStream
         .option("checkpointLocation", checkpoint_path)
         .format("json")
-        .foreachBatch(lambda df,number: _handle_batches(spark,
-                                                        df,number,
-                                                        transformed_messages_output_path))
+        .foreachBatch(lambda df,number: _handle_batches(spark,df,number,transformed_messages_output_path))
         .trigger(availableNow=True)
         .start(transformed_messages_output_path))
 

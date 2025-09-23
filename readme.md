@@ -29,5 +29,4 @@ the resulting messages table that contains no duplicates
 and a full list of messages. Use the Delta format `merge into` 
 capabilities for each batch stream function. Check and optimize.
 
-3. [x] Use DTOs to encapsulate message structure
-
+3. [x] Adapt telegram messages for the Fabric Eventstream consumption
