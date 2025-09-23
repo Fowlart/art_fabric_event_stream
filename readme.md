@@ -24,9 +24,9 @@
 
 1. [x] ~~Ingest the telegram messages from the specific channel~~
 
-2. [x] Configure Spark Structured Streaming to get 
+2. [x] ~~Configure Spark Structured Streaming to get 
 the resulting messages table that contains no duplicates 
 and a full list of messages. Use the Delta format `merge into` 
-capabilities for each batch stream function. Check and optimize.
+capabilities for each batch stream function. Check and optimize.~~
 
-3. [x] Adapt telegram messages for the Fabric Eventstream consumption
+3. [x] Implement change data capture(CDC) from the Delta table to the EventStream
