@@ -30,15 +30,12 @@ if __name__=='__main__':
           .format("delta")
           .load(PATH_TO_MESSAGES+"/messages")
           .orderBy(col("message_date").desc())
-          .limit(10)
+          .limit(100)
+          .distinct()
           .select(
-            col("crawling_date"),
             col("message_date"),
-            col("message_text"),
-            col("dialog"),
-            col("post_author"),
-            col("is_channel"),
-            col("is_group"))
+            col("first_name"),
+            col("message_text"))
           .collect())
 
     list_of_jsons: list[dict[str,str]] = [el.asDict() for el in list_of_rows]

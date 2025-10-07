@@ -27,8 +27,10 @@ class Telegramer():
 
     # print messages from dialog
     async def _print_messages_from_dialog(self, dialog_id: str):
+
         async for m in self.tg_client.iter_messages(entity=dialog_id,limit=100):
-            print(m)
+            print(m.sender.first_name)
+            print(m.message)
 
     def print_messages_from_dialog(self, dialog_id: str):
         with self.tg_client:
@@ -50,16 +52,12 @@ class Telegramer():
 
             # Data to be written
             json_record = {
-                    "crawling_date": str(dt.datetime.now()),
-                    "message_date": str(m.date.date()),
+                    "message_date": str(m.date),
                     "message_text": m.message,
-                    "dialog": m.sender.title,
-                    "post_author": m.post_author,
-                    "is_channel": m.is_channel,
-                    "is_group": m.is_group,
-                    "user": user
+                    "first_name": m.sender.first_name,
             }
             message_list.append(json_record)
+        message_list.reverse()
         return message_list
 
 
@@ -68,5 +66,6 @@ class Telegramer():
                                  message_limit: int = 100) -> list[dict[str,Any]]:
         with self.tg_client:
             message_list: list[dict[str,Any]] = self.tg_client.loop.run_until_complete(self._get_messages_from_dialog(dialog_id, message_limit))
+
         return message_list
 
